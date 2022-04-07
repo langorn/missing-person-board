@@ -1,0 +1,34 @@
+{
+  "name": "rust-mpb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "asb --verbose",
+    "dev:deploy:contract": "near dev-deploy --wasmFile=\"./out/main.wasm\" && echo \"# This file used by parcel\nCONTRACT_NAME=$(cat neardev/dev-account)\" > .env.local",
+    "deploy:contract": "near deploy && rm -f .env.local",
+    "deploy": "yarn build && yarn deploy:contract",
+    "prestart": "yarn build && yarn deploy:contract",
+    "start": "parcel src/index.html",
+    "asp": "asp --verbose",
+    "test": "asp && yarn jest",
+    "jest": "yarn build && jest test --env=near-cli/test_environment",
+    "dev": "parcel",
+    "diss": "parcel serve",
+    "pbuild": "parcel build"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "jest-environment-node": "^27.3.1",
+    "near-sdk-as": "3.2.3",
+    "near-cli": "^2.2.0",
+    "parcel-bundler": "^1.12.5",
+    "parcel": "latest"
+  },
+  "dependencies": {
+    "near-api-js": "^0.43.1",
+    "regenerator-runtime": "^0.13.9"
+  },
+  "author": "",
+  "license": "ISC"
+}
