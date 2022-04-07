@@ -8,15 +8,15 @@ use std::fmt;
 use near_sdk::serde::{Serialize, Deserialize};
 
 use near_sdk::PanicOnDefault;
-extern crate rand;
-use crate::rand::Rng;
+// extern crate rand;
+// use crate::rand::Rng;
 
-use rand::prelude::*;
-use rand_chacha::ChaCha8Rng;
-use rand_chacha::rand_core::SeedableRng;
-use rand_chacha::rand_core::RngCore;
+// use rand::prelude::*;
+// use rand_chacha::ChaCha8Rng;
+// use rand_chacha::rand_core::SeedableRng;
+// use rand_chacha::rand_core::RngCore;
 
-use rand_seeder::{Seeder};
+// use rand_seeder::{Seeder};
 
 near_sdk::setup_alloc!();
 
@@ -81,9 +81,10 @@ impl BulletinBoards for BulletinBoard {
         //     })
         //     .collect();
 
-        let mut gen = rand_chacha::ChaCha8Rng::seed_from_u64(10);
         // let primary_key: Vec<u64> = (0..100).map(|_| gen.next_u64()).collect(); 
-        let primary_key = gen.next_u64();
+        // let mut gen = rand_chacha::ChaCha8Rng::seed_from_u64(10);
+        // let primary_key = gen.next_u64();
+        let primary_key:u8 = *env::random_seed().get(0).unwrap();
 
         // println!(".................");
         // println!("{:?}", primary_key);
@@ -113,11 +114,12 @@ impl BulletinBoards for BulletinBoard {
         // return self.post_per_owner.get(&id); //cloned();
         // return self.post_per_owner;
         let start = u128::from(from_index.unwrap_or(U128(0)));
-        let result =  self.post_per_owner.keys()
+        let result =  self.post_by_id.keys()
         .skip(start as usize)
         .take(limit.unwrap_or(50) as usize)
         .map(|post_id| self.get_bulletin(post_id.clone()).unwrap())
         .collect();
+
         return result;
 
     }
